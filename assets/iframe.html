@@ -1,0 +1,199 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <!-- http://garden.zendesk.com -->
+  <link rel="stylesheet" href="https://assets.zendesk.com/apps/sdk-assets/css/2/zendesk_garden.css" type="text/css">
+
+<style type="text/css">
+
+
+
+.c-txt__input2 {
+    transition: border-color .25s ease-in-out,box-shadow .1s ease-in-out,background-color .25s ease-in-out,color .25s ease-in-out;
+    outline: none;
+    border: 1px solid #ddd;
+    border-radius: 2px;
+    background-color: #fff;
+    /* padding: .71429em 1.14286em; */
+    width: 100%;
+    /* min-height: 40px; */
+    box-sizing: border-box;
+    vertical-align: middle;
+    line-height: 1.28571;
+    color: #999;
+    font-family: inherit;
+    font-size: 12px;
+    padding-left: 10px;
+    padding: 6px;  
+}
+
+.bloqueado {
+      border: 0px solid #ddd;
+}
+
+.c-txt__label {
+    font-size: 12px;
+    color: #999;
+    float: none;
+    margin: 4px 0 6px 0;
+    text-align: left;
+    z-index: 0;
+}
+
+</style>
+
+
+</head>
+<body>
+    <section data-main></section>
+
+  <!-- https://github.com/zendesk/zendesk_app_framework_sdk -->
+  <script type="text/javascript" src="https://assets.zendesk.com/apps/sdk/2.0/zaf_sdk.js"></script>
+
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+  <script>
+    // Initialise the Zendesk JavaScript API client
+    // https://developer.zendesk.com/apps/docs/apps-v2
+    var client = ZAFClient.init();
+
+    function renderText(text) {
+      var mainSectionEl = document.querySelector('section[data-main]');
+      mainSectionEl.innerText = text;
+    }
+/*
+    function getCurrentUserMonto() {
+      return client.get('currentUser.customField:monto').then(function(data) {
+        return data['currentUser.customField:monto'];
+      });
+    }
+*/
+
+
+//
+
+
+/////////////////// LOGICA DEL NEGOCIO //////////////////////
+
+
+$( document ).ready(function() {
+
+
+    function calculo_monto_convenido(){
+      var descto = Math.round(($('#montocapital').val() * ($('#descto').val()))/100,1)-1;
+      var monto  = $('#montocapital').val()  - descto ;
+      $('#montoconvenido').val(monto); 
+      //console.log('ddddd');
+    }
+
+   
+    function calculo_cuota(){
+      var monto = $('#montoconvenido').val() / $('#cuotas').val(); 
+      $('#montocuota').val(Math.round(monto),1); 
+    }
+
+
+    $( "#descto").keyup(function() {
+        calculo_monto_convenido();
+    });
+
+    $( "#cuotas").keyup(function() {
+        calculo_cuota();
+    });
+
+   /* $('#aceptar').click(function(){
+      alert('dddd');
+    });*/
+
+
+
+
+    function calcular(){
+
+      //% de descto = 360004735173
+       client.set({ 'ticket.customField:custom_field_360004735173': $('#descto').val() }).then(function(data) {
+        //console.log(data); // { 'ticket.subject': 'Printer Overheating Incident', 'ticket.type': 'incident' }
+      });
+
+      //monto convenido = 360004786094
+       client.set({ 'ticket.customField:custom_field_360004786094': $('#descto').val() }).then(function(data) {
+        //console.log(data); // { 'ticket.subject': 'Printer Overheating Incident', 'ticket.type': 'incident' }
+      });
+
+      //cuotas = 360004786114
+       client.set({ 'ticket.customField:custom_field_360004786114': $('#montoconvenido').val()  }).then(function(data) {
+        //console.log(data); // { 'ticket.subject': 'Printer Overheating Incident', 'ticket.type': 'incident' }
+      });
+
+      //Monto Cuota = 360004735193
+       client.set({ 'ticket.customField:custom_field_360004735193': $('#montocuota').val() }).then(function(data) {
+        //console.log(data); // { 'ticket.subject': 'Printer Overheating Incident', 'ticket.type': 'incident' }
+      });
+
+       //limpiar();
+    }
+
+    function limpiar(){
+      console.log('limpiando');
+      $('#montocuota').val();
+      $('#descto').val();
+      $('#montoconvenido').val();
+      $('#montocuota').val();
+    }
+
+    function init() {
+
+      //MONTO CAPITAL
+      client.get('currentUser.customField:monto').then(function(data){
+          var monto_capital = data['currentUser.customField:monto'];
+ 
+          $('#montocapital').val(monto_capital);
+          //calcular(monto_capital);
+      });
+      
+    }
+
+
+});
+
+    client.on('app.registered', function() {
+      client.invoke('resize', { width: '100%', height: '390px' });
+      init();
+    });
+
+  </script>
+
+  
+  <div class="u-cf u-mb">
+            <fieldset class="c-txt u-mb-sm">
+              <label class="c-txt__label" for="txt-2">Monto Capital ($): </label>
+              <input class="c-txt__input2 bloqueado" id="montocapital" placeholder="" type="input" readonly="true">
+            </fieldset>  
+
+            <fieldset class="c-txt u-mb-sm">
+              <label class="c-txt__label" for="txt-2">% de Descto: </label>
+              <input class="c-txt__input2" id="descto" placeholder="" type="input" autocomplete="off">
+            </fieldset>  
+
+            <fieldset class="c-txt u-mb-sm">
+              <label class="c-txt__label" for="txt-2">Monto Convenido  ($): </label>
+              <input class="c-txt__input2 bloqueado" id="montoconvenido" placeholder="" type="input" readonly="true">
+            </fieldset>  
+
+            <fieldset class="c-txt u-mb-sm">
+              <label class="c-txt__label" for="txt-2">Cuotas: </label>
+              <input class="c-txt__input2" id="cuotas" placeholder="" type="input"  autocomplete="off">
+            </fieldset>  
+
+            <fieldset class="c-txt u-mb-sm">
+              <label class="c-txt__label" for="txt-2">Monto por Cuotas ($): </label>
+              <input class="c-txt__input2 bloqueado" style="font-weight: bold;" id="montocuota" placeholder="" type="input" readonly="true">
+            </fieldset>  
+
+      <div class="u-cf u-mb">
+        <button class="c-btn" id="aceptar" onclick="calcular()">Aceptar Condición</button>
+      </div>
+  </div>
+
+</body>
+</html>

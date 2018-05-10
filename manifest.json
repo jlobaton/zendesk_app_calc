@@ -1,0 +1,21 @@
+{
+  "name": "Calculadora",
+  "author": {
+    "name": "Jesús Lobatón",
+    "email": "jesus.lobaton@zerviz.cl",
+    "url": "http://www.zerviz.cl"
+  },
+  "defaultLocale": "en",
+  "private": true,
+  "location": {
+    "support": {
+      //New Ticket
+      "new_ticket_sidebar": "assets/iframe.html",
+
+      //Edit un Ticket
+      "ticket_sidebar": "assets/iframe.html"  
+    }
+  },
+  "version": "1.0",
+  "frameworkVersion": "2.0"
+}
