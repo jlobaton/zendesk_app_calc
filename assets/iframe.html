@@ -116,12 +116,12 @@ $( document ).ready(function() {
       });
 
       //monto convenido = 360004786094
-       client.set({ 'ticket.customField:custom_field_360004786094': $('#descto').val() }).then(function(data) {
+       client.set({ 'ticket.customField:custom_field_360004786094': $('#montoconvenido').val() }).then(function(data) {
         //console.log(data); // { 'ticket.subject': 'Printer Overheating Incident', 'ticket.type': 'incident' }
       });
 
       //cuotas = 360004786114
-       client.set({ 'ticket.customField:custom_field_360004786114': $('#montoconvenido').val()  }).then(function(data) {
+       client.set({ 'ticket.customField:custom_field_360004786114': $('#cuotas').val()  }).then(function(data) {
         //console.log(data); // { 'ticket.subject': 'Printer Overheating Incident', 'ticket.type': 'incident' }
       });
 
@@ -155,17 +155,17 @@ client.get('ticket').then(function(data) {
     //  });
 
 client.get('ticket.requester.id').then(function(data){
-var id = data['ticket.requester.id'];
-//  console.log(data['ticket.requester.id']);
-client.request('/api/v2/users/'+id).then(
-  function(tickets) {
-    var monto_capital = tickets.user.user_fields.monto;
-    $('#montocapital').val(monto_capital);
-  },
-  function(response) {
-    console.error(response.responseText);
-  }
-);
+    var id = data['ticket.requester.id'];
+    //  console.log(data['ticket.requester.id']);
+    client.request('/api/v2/users/'+id).then(
+    function(tickets) {
+      var monto_capital = tickets.user.user_fields.monto;
+      $('#montocapital').val(monto_capital);
+    },
+    function(response) {
+      console.error(response.responseText);
+    }
+  );
 });
 
 
