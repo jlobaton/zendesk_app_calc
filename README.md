@@ -33,7 +33,7 @@ App que permite seleccionar automaticamente un Dato del Usuario y lo muestra en 
 
 ### Screenshot(s):
 <p align="center">
-<img src="http://www.seguridadsistema.com.ve/git/pantalla-calculadora.png" />
+<img src="http://www.seguridadsistema.com.ve/github/zendesk/pantalla-calculadora.png" />
 </p>
 
 ## Autor (Author)
