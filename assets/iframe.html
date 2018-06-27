@@ -143,29 +143,37 @@ $( document ).ready(function() {
 
     function init() {
 
-client.get('ticket').then(function(data) {
-  //console.log(data); // { "ticket.requester.name": "Mikkel Svane" }
-});
+      var client = ZAFClient.init();
+     
+     /* client.get('ticket').then(function(data) {
+        console.log('jesus '+data); // { "ticket.requester.name": "Mikkel Svane" }
+      });
+*/
 
+/*
 
-      //MONTO CAPITAL
-     // client.get('currentUser.customField:monto').then(function(data){
-       //   var monto_capital = data['currentUser.customField:monto'];
+      client.get('ticket.subject').then(function(data) {
+       // console.log(data); // { 'ticket.subject': 'Help, my printer is on fire' }
+      });
+*/
+        //MONTO CAPITAL
+       // client.get('currentUser.customField:monto').then(function(data){
+         //   var monto_capital = data['currentUser.customField:monto'];
 
-    //  });
+      //  });
 
-client.get('ticket.requester.id').then(function(data){
-    var id = data['ticket.requester.id'];
-    //  console.log(data['ticket.requester.id']);
-    client.request('/api/v2/users/'+id).then(
-    function(tickets) {
-      var monto_capital = tickets.user.user_fields.monto;
-      $('#montocapital').val(monto_capital);
-    },
-    function(response) {
-      console.error(response.responseText);
-    }
-  );
+      client.get('ticket.requester.id').then(function(data){
+          var id = data['ticket.requester.id'];
+          //  console.log(data['ticket.requester.id']);
+          client.request('/api/v2/users/'+id).then(
+          function(tickets) {
+            var monto_capital = tickets.user.user_fields.monto;
+            $('#montocapital').val(monto_capital);
+          },
+          function(response) {
+            console.error(response.responseText);
+          }
+        );
 });
 
 
