@@ -15,6 +15,7 @@ App que permite seleccionar automaticamente un Dato del Usuario y lo muestra en 
 * openssh
 * build-essential
 * rbenv
+* zlib1-dev
 
 ### Para el uso del Zendesk Apps Tools (ZAT), deberá instalar:
 ``` 
